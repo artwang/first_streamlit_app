@@ -1,5 +1,8 @@
 from itertools import combinations
 
+##==================================================
+## reduce hidden (2, 3, 4) pairs
+##==================================================
 def reduce_possible_from_hidden_pair(dictPossible, target):     # e.g. ((5, 7, 9, 6), {(6, 1), (8, 1), (7, 0), (6, 0)})
     reduced = False
     for tgt in target:
@@ -32,19 +35,19 @@ def check_hidden_pairs(dictPossible, block):
     block_reduced = reduce_possible_from_hidden_pair(dictPossible, target)
     reduced = reduced or block_reduced
 
-
-for i in range(9):
-    # check horizental block
-    block = [d for d in dictPossible.items() if d[0][0]==i]
-    check_hidden_pairs(dictPossible, block)
-
-    # check vertical block
-    block = [d for d in dictPossible.items() if d[0][1]==i]
-    check_hidden_pairs(dictPossible, block)
-
-for x in range(0,9,3):
-    for y in range(0,9,3):
-        block = [d for i in range(x//3*3,x//3*3+3) for j in range(y//3*3,y//3*3+3) for d in dictPossible.items() if (i,j)==d[0]]
+def reduce_hidden_pair(puzzle, dictPossible):
+    for i in range(9):
+        # check horizental block
+        block = [d for d in dictPossible.items() if d[0][0]==i]
         check_hidden_pairs(dictPossible, block)
+
+        # check vertical block
+        block = [d for d in dictPossible.items() if d[0][1]==i]
+        check_hidden_pairs(dictPossible, block)
+
+    for x in range(0,9,3):
+        for y in range(0,9,3):
+            block = [d for i in range(x//3*3,x//3*3+3) for j in range(y//3*3,y//3*3+3) for d in dictPossible.items() if (i,j)==d[0]]
+            check_hidden_pairs(dictPossible, block)
 
 printPuzzle(puzzle, dictPossible)
